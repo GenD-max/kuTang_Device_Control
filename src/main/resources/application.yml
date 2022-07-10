@@ -44,8 +44,8 @@ spring:
 
 # redis配置
   redis:
-    host: 47.98.157.214
-    password: dml666
+    host: 
+    password: 
     jedis:
       pool:
         max-active: 8
