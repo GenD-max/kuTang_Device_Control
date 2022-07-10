@@ -1,0 +1,84 @@
+# 指标监控
+management:
+  endpoints:
+    enabled-by-default: true  #默认开启所有监控端点
+    web:
+      exposure:
+        include: '*'   #以web方式暴露所有端点
+  endpoint:
+    health:
+      show-details: always  #显示health详细信息
+      enabled: true  #开放health端点检查
+
+    info:
+      enabled: true  #开放info端点检查
+
+    beans:
+      enabled: true # 开放beans端点检查
+
+    metrics:
+      enabled: true #开放metrics端点检查
+
+  #配置收集监控指标的端口：供服务大屏可视化
+  boot:
+    admin:
+      client:
+        url: http://localhost:8081 # 此处填写大屏的地址
+
+spring:
+  #解决Mysql存入之间和展示页面时间相差8个小时问题，因为Springboot和Mysql的使用时区不一致
+  jackson:
+      time-zone: GMT+8
+      date-format: yyyy-MM-dd HH:mm:ss
+
+  # 德鲁伊连接池自动注入
+  autoconfigure:
+      exclude: com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure
+
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
+    contentnegotiation:
+      favor-parameter: true
+
+# redis配置
+  redis:
+    host: 47.98.157.214
+    password: dml666
+    jedis:
+      pool:
+        max-active: 8
+        max-idle: 8
+        max-wait: -1ms
+        min-idle: 0
+    lettuce:
+      pool:
+        max-active: 8
+        max-idle: 8
+        max-wait: -1ms
+        min-idle: 0
+      shutdown-timeout: 100ms
+
+# 配置Mysql
+  datasource:
+    url: jdbc:mysql://www.gendml.cn:3306/kt_manage_db?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2b8&useSSL=false
+    username: root
+    password: dml666
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+
+  druid:
+    initial-size: 10 #初始化时建立物理连接的个数
+    min-idle: 10 #最小连接池数量
+    maxActive: 100 #最大连接池数量
+    maxWait: 20000 #获取连接时最大等待时间，单位毫秒
+
+server:
+  port: 8088
+
+# 配置mybatisplus的mapper扫描路径
+mybatis-plus:
+    mapper-locations: classpath*:com.gendml.kutang.mapper
+    configuration:
+        map-underscore-to-camel-case: false
